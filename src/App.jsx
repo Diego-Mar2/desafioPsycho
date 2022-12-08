@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GlobalStyles } from './assets/styles/GlobalStyles';
 import { Header } from './components/Header';
 import { LocationsBoard } from './components/LocationsBoard';
+import { fetchPokemon } from './services/fetchPokemon';
 import { fetchPokemonList } from './services/fetchPokemonList';
 
 export default function App() {
 
+  const [allPokemons, setAllPokemons] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
   // const [locations, setLocations] = useState([]);
 
   if (pokemonList) {
     console.log('app ', pokemonList);
   }
+
+  async function getAllPokemons() {
+    const getAllPokemons = await fetchPokemon('?limit=10000');
+    setAllPokemons(getAllPokemons.data);
+
+  }
+  console.log('getAllPokemons ', allPokemons.results);
 
   //ok
   async function handleSubmit(filterData) {
@@ -27,7 +36,7 @@ export default function App() {
       console.log(filter.move);
 
       //busca pokemons pelo filtro geração (uso o link da geração)
-      const pokemonListData = await fetchPokemonList(filter.generation);
+      const pokemonListData = await fetchPokemonList(filter.generation, allPokemons.results);
 
       //filtro de pokemons pelos tipos selecionados
       const filterPokemonByType = pokemonListData.filter((pokemon) => {
@@ -62,6 +71,10 @@ export default function App() {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    getAllPokemons();
+  }, []);
 
   return (
     <>

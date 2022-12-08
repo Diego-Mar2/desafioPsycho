@@ -17,8 +17,6 @@ export function Header({ onSubmit }) {
   const [typesList, setTypesList] = useState([]);
   const [movesList, setMovesList] = useState([]);
 
-  // console.log('header', movesList);
-
   function handleSubmit() {
 
     onSubmit({
