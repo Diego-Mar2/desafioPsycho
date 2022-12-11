@@ -2,23 +2,18 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  margin: auto;
-  min-width: 170px;
+  min-width: 180px;
   position: relative;
-  margin-top: 36px;
-  width: 160px;
+  margin: 28px 8px;
+  margin-bottom: 8px;
   height: 140px;
   border-radius:8px;
   background: ${(props) => props.color};
 
   img{
-    width: 170px;
+    width: 100%;
     position: absolute;
     margin-top: -70px;
-  }
-
-  & + & {
-    margin-left: 8px;
   }
 `;
 

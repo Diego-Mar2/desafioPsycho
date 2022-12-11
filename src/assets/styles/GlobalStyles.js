@@ -14,7 +14,7 @@ export const GlobalStyles = createGlobalStyle`
     background: #b1b1b1;
     color: #333;
     min-width: 1000px;
-    width: 1200px;
+    width: 1300px;
     margin: auto;
   }
 
