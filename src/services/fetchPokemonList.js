@@ -5,33 +5,22 @@ export async function fetchPokemonList(genURL, allPokemon) {
   try {
     const response = await fetch(genURL);
     const data = await response.json();
+    const dataPokemon = data.pokemon_species.map(({ name }) => name);
+    const pokemonNames = allPokemon.filter(({ name }) => dataPokemon.some((n) => name.includes(n)));
 
     //map para listar os pokemons usando a propriedade pokemon_species dentro de geração
-    const promises = data.pokemon_species.map(async (pokemon) => {
+    const promises = pokemonNames.map(async (pokemon) => {
 
-      //pegando o nome por espécies, temos uma inconsistência, pois alguns pokemons tem nomes compostos, e suas espécies não
-      const pokemonData = (await fetchPokemon(pokemon.name));
+      for (let i = 0; i < allPokemon.length; i++) {
 
-      //quando temos um 404 de retorno pelas espécies, conferimos se o nome existe dentro da lista de pokemons
-      const isFailed = pokemonData.response.status === 404;
+        const isNameEqual = allPokemon[i].name.endsWith(pokemon.name);
 
-      if (isFailed) {
-        for (let i = 0; i < allPokemon.length; i++) {
+        if (isNameEqual) {
+          const pokemonData = await fetchPokemon(allPokemon[i].name);
 
-          const isNameEqual = allPokemon[i].name.includes(pokemon.name);
-
-          if (isNameEqual) {
-
-            //será procurado na lista o nome da especie do pokemon, e se for existente, será realizado um novo fetch.
-            const pokemonData = await fetchPokemon(allPokemon[i].name);
-            console.log(allPokemon[i].name);
-            console.log('entrou no for');
-            return pokemonData.data;
-          }
+          return pokemonData.data;
         }
       }
-
-      return pokemonData.data;
     });
 
     const pokemonList = await Promise.all(promises);
@@ -41,6 +30,3 @@ export async function fetchPokemonList(genURL, allPokemon) {
     console.log(error);
   }
 }
-
-
-// (await fetchPokemon(pokemon.name)).data,

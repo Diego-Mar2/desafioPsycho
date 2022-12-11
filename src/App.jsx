@@ -9,18 +9,11 @@ export default function App() {
 
   const [allPokemons, setAllPokemons] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
-  // const [locations, setLocations] = useState([]);
-
-  if (pokemonList) {
-    console.log('app ', pokemonList);
-  }
 
   async function getAllPokemons() {
     const getAllPokemons = await fetchPokemon('?limit=10000');
     setAllPokemons(getAllPokemons.data);
-
   }
-  console.log('getAllPokemons ', allPokemons.results);
 
   //ok
   async function handleSubmit(filterData) {

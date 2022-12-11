@@ -1,29 +1,24 @@
-import { useState, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
 
 import { Container } from './styles';
 
 import { Card } from '../Card';
 
-export function CardsBoard({ pokemonList }) {
+export function CardsBoard({ pokeData, local }) {
 
-  const [pokemonImage, setPokemonImage] = useState();
+  const isPokeEncounters = pokeData.filter(({ location }) => location.includes(local) );
 
-  useEffect(() => {
-    function addImagetoCard(){
-      setPokemonImage(pokemonList.sprites);
-    }
-    addImagetoCard();
-  }, [pokemonImage]);
+  console.log('ultraviolence', isPokeEncounters);
+
+  // console.log(pokeData);
 
   return (
     <Container>
-      <h2>City</h2>
-      {pokemonList.map((pokemon) => (
+      <h2>{local}</h2>
+      {pokeData.map((data) => (
         <Card
-          key={pokemon.name}
-          pokemon={pokemon}
+          key={data.pokemon.name}
+          pokemon={data.pokemon}
         />
       ))}
     </Container>
@@ -32,5 +27,6 @@ export function CardsBoard({ pokemonList }) {
 
 CardsBoard.propTypes = {
   pokemonList: PropTypes.array,
-  setPokemonList: PropTypes.func,
+  pokeData: PropTypes.object,
+  local: PropTypes.string,
 };
