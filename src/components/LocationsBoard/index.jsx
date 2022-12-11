@@ -10,8 +10,9 @@ import { useEffect } from 'react';
 export function LocationsBoard({ pokemonList }) {
 
   const [locations, setLocations] = useState([]);
-  const [pokeData, setPokeData] = useState([]);
   const [eachLocation, setEachLocation] = useState([]);
+  const [pokeData, setPokeData] = useState([]);
+  const [pokeNotEncounter, setPokeNotEncounter] = useState([]);
 
   async function getLocationsByPokemons() {
 
@@ -50,8 +51,8 @@ export function LocationsBoard({ pokemonList }) {
     setPokeData(pokemon);
 
   }
-  // console.log('em cima do add', pokeData);
-  // console.log('each Location', eachLocation);
+
+  const isPokeLocationNotFound = pokeData.filter(({ location }) => location.length === 0);
 
   useEffect(() => {
     getLocationsByPokemons();
@@ -61,6 +62,10 @@ export function LocationsBoard({ pokemonList }) {
     addLocationsIntoPokemons();
   }, [locations]);
 
+  useEffect(() => {
+    setPokeNotEncounter(isPokeLocationNotFound);
+  }, [pokeData]);
+
   return (
     <Container>
       <h1>Locations</h1>
@@ -68,12 +73,19 @@ export function LocationsBoard({ pokemonList }) {
       {locations && (
         eachLocation.map((local) => (
           <CardsBoard
-            key={local.name}
+            key={local}
             pokeData={pokeData}
             local={local}
           />
-
         ))
+      )}
+
+      {pokeNotEncounter.length > 0 && (
+        <CardsBoard
+          key='unknown location'
+          pokeData={pokeNotEncounter}
+          local='unknown location'
+        />
       )}
     </Container>
   );
