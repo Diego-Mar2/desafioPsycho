@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types';
 
-import { Container } from './styles';
+import { Container, Home } from './styles';
 
 import { CardsBoard } from '../CardsBoard';
 import { useState } from 'react';
 import { fetchLocations } from '../../services/fetchLocations';
 import { useEffect } from 'react';
 
-export function LocationsBoard({ pokemonList }) {
+import detective from '../../assets/images/detective_pikachu.png';
+
+import Loader from '../Loader';
+
+export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
 
   const [locations, setLocations] = useState([]);
   const [eachLocation, setEachLocation] = useState([]);
@@ -42,13 +46,13 @@ export function LocationsBoard({ pokemonList }) {
           return { pokemon, location: local };
         }
       }
-
     });
 
     const noRepeatLocations = [...new Set(location.flat())];
 
     setEachLocation(noRepeatLocations);
     setPokeData(pokemon);
+    setIsLoading(false);
 
   }
 
@@ -68,29 +72,50 @@ export function LocationsBoard({ pokemonList }) {
 
   return (
     <Container>
-      <h1>Locations</h1>
+      <Loader isLoading={isLoading} />
+      {pokeData.length < 1 && (
+        <Home>
+          <img src={detective} alt="detective" />
 
-      {locations && (
-        eachLocation.map((local) => (
-          <CardsBoard
-            key={local}
-            pokeData={pokeData}
-            local={local}
-          />
-        ))
+          <span>Você pode procurar a localização de pokemons por
+            <strong> Geração</strong>,
+            <strong> Tipos</strong> e
+            <strong> Ataques </strong>!!
+          </span>
+
+        </Home>
       )}
 
-      {pokeNotEncounter.length > 0 && (
-        <CardsBoard
-          key='unknown location'
-          pokeData={pokeNotEncounter}
-          local='unknown location'
-        />
+      {pokeData.length >= 1 && (
+        <>
+          <h1>Locations</h1>
+
+          {locations && (
+            eachLocation.map((local) => (
+              <CardsBoard
+                key={local}
+                pokeData={pokeData}
+                local={local}
+              />
+            ))
+          )}
+
+          {pokeNotEncounter.length > 0 && (
+            <CardsBoard
+              key='unknown location'
+              pokeData={pokeNotEncounter}
+              local='unknown location'
+            />
+          )}
+        </>
       )}
+
     </Container>
   );
 }
 
 LocationsBoard.propTypes = {
   pokemonList: PropTypes.array,
+  isLoading: PropTypes.bool,
+  setIsLoading: PropTypes.func,
 };

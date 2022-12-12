@@ -9,6 +9,7 @@ export default function App() {
 
   const [allPokemons, setAllPokemons] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getAllPokemons() {
     const getAllPokemons = await fetchPokemon('?limit=10000');
@@ -17,6 +18,9 @@ export default function App() {
 
   //ok
   async function handleSubmit(filterData) {
+
+    setIsLoading(true);
+
     try {
 
       //recebe os parametros dos filtros do header
@@ -76,6 +80,8 @@ export default function App() {
         onSubmit={handleSubmit}
       />
       <LocationsBoard
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         pokemonList={pokemonList}
         setPokemonList={setPokemonList}
       />

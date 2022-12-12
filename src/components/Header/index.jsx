@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
 
 import { fetchFilters } from '../../services/fetchFilters';
 import { fetchMoves } from '../../services/fetchMoves';
 
-import { Container, SelectContainer } from './styles';
+import { Container, SelectContainer, CustomSelect } from './styles';
 
 export function Header({ onSubmit }) {
 
@@ -74,18 +73,21 @@ export function Header({ onSubmit }) {
       <h1>Pokedex</h1>
 
       <SelectContainer >
-        <Select
+        <CustomSelect
+          classNamePrefix='Select'
           options={generationsOptions}
           onChange={({ value }) => setGeneration(value)}
         />
 
-        <Select
+        <CustomSelect
+          classNamePrefix='Select'
           options={typesOptions}
           isMulti
           onChange={handleChangeTypes}
         />
 
-        <Select
+        <CustomSelect
+          classNamePrefix='Select'
           options={movesOptions}
           onChange={({ value }) => setMove(value)}
         />

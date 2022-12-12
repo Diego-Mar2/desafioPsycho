@@ -1,4 +1,4 @@
-import ReactSelect from 'react-select';
+import Select from 'react-select';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -27,18 +27,32 @@ export const SelectContainer = styled.div`
 
 `;
 
-export const Select = styled(ReactSelect)`
-  width: 200px;
-  height: 36px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
-  border-radius: 4px;
-  outline: none;
-  padding: 0 16px;
-  font-size: 16px;
-  transition: border-color 0.2s ease-in;
-  display: flex;
+export const CustomSelect = styled(Select)`
+  .Select__control {
+    width: 280px;
+    height: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .Select__control:hover {
+    border-color: #498899;
+  }
+
+  .Select__value-container {
+    display: flex;
+  }
+
+  .Select__indicator-separator {
+    display: none;
+  }
+
+  .Select__menu {
+    color: #498899;
+  }
 
   & + & {
-    margin-left: 8px;
+    margin-left: 18px;
   }
+
 `;

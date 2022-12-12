@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 import { Overlay } from './styles';
@@ -9,10 +10,11 @@ export default function Loader({ isLoading }){
     return null;
   }
 
-  return (
+  return ReactDOM.createPortal(
     <Overlay>
       <img src={charmander} alt="loader" />
-    </Overlay>
+    </Overlay>,
+    document.querySelector('#loader-root'),
   );
 }
 

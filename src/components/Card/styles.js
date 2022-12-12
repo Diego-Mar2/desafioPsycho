@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  min-width: 180px;
+  width: 180px;
   position: relative;
   margin: 28px 8px;
   margin-bottom: 8px;
@@ -20,7 +20,7 @@ export const Container = styled.div`
 export const Information = styled.div`
   display: flex;
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   position: relative;
   overflow: hidden;
 
@@ -31,7 +31,7 @@ export const Information = styled.div`
     align-items: flex-end;
     width: 100%;
     margin: auto;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
     position: relative;
   }
 

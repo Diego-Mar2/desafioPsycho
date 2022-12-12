@@ -11,7 +11,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background: #b1b1b1;
+    background: #fff;
     color: #333;
     min-width: 1000px;
     width: 1300px;

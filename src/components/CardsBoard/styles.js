@@ -15,7 +15,7 @@ export const Container = styled.div`
     padding: 8px;
     position: absolute;
     margin-left: 25px;
-    background: #b1b1b1;
+    background: #fff;
     margin-top: -48px;
   }
 `;
