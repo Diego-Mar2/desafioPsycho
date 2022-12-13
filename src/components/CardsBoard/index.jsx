@@ -13,11 +13,12 @@ export function CardsBoard({ pokeData, local }) {
   function findPokemons() {
     if (local === 'unknown location') {
 
+      //os pokemons sem localização serão colocados no array para serem exibidos
       const isPokeNotEncounters = pokeData.filter(({ location }) => location.length === 0);
-
       return setPokeEncounter(isPokeNotEncounters);
     }
 
+    //os pokemons com localização correspondente a posição atual do map serão colocados no array para serem exibidos
     const isPokeEncounters = pokeData.filter(({ location }) => location.includes(local));
 
     setPokeEncounter(isPokeEncounters);

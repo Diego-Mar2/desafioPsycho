@@ -10,13 +10,13 @@ export default function App() {
   const [allPokemons, setAllPokemons] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFirstTime, setIsFirstTime] = useState(true);
 
   async function getAllPokemons() {
     const getAllPokemons = await fetchPokemon('?limit=10000');
     setAllPokemons(getAllPokemons.data);
   }
 
-  //ok
   async function handleSubmit(filterData) {
 
     setIsLoading(true);
@@ -29,8 +29,6 @@ export default function App() {
         type: filterData.types,
         move: filterData.move,
       };
-
-      console.log(filter.move);
 
       //busca pokemons pelo filtro geração (uso o link da geração)
       const pokemonListData = await fetchPokemonList(filter.generation, allPokemons.results);
@@ -63,6 +61,7 @@ export default function App() {
       });
 
       setPokemonList(filterPokemonByType);
+      setIsFirstTime(false);
 
     } catch (error) {
       console.log(error);
@@ -80,10 +79,10 @@ export default function App() {
         onSubmit={handleSubmit}
       />
       <LocationsBoard
+        pokemonList={pokemonList}
         isLoading={isLoading}
         setIsLoading={setIsLoading}
-        pokemonList={pokemonList}
-        setPokemonList={setPokemonList}
+        isFirstTime={isFirstTime}
       />
     </>
 

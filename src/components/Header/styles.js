@@ -16,6 +16,15 @@ export const Container = styled.div`
     border-radius: 20px;
     background: #498899;
     color: #fff;
+
+    :hover {
+      background: #3b6e8c;
+    }
+
+    :disabled {
+      background: #b1b1b1;
+      cursor: default;
+    }
   }
 
 `;

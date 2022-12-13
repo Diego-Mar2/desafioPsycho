@@ -5,6 +5,7 @@ import { Container, Information } from './styles';
 import { pokemonTypes } from '../../assets/styles/pokemonTypes';
 
 import pokeball from '../../assets/images/pokeball.svg';
+import pokeImageNotFound from '../../assets/images/img-not-found.png';
 
 export function Card({ pokemon }) {
 
@@ -12,11 +13,13 @@ export function Card({ pokemon }) {
     (type) => pokemon.types[0].type.name.indexOf(type.name) !== -1
   );
 
+  const pokeImage = pokemon.sprites.front_default;
+
   return (
     <Container
       color={color}
     >
-      <img src={pokemon.sprites.front_default} alt="" />
+      <img src={pokeImage ? pokeImage : pokeImageNotFound} alt="" />
       <Information>
         <img src={pokeball} alt="pokeball" />
         <div className="pokemonData">

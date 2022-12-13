@@ -16,36 +16,7 @@ export function Header({ onSubmit }) {
   const [typesList, setTypesList] = useState([]);
   const [movesList, setMovesList] = useState([]);
 
-  function handleSubmit() {
-
-    onSubmit({
-      generation,
-      types,
-      move,
-    });
-
-  }
-
-  async function getMovesByType(valueTypes) {
-
-    const moves = [];
-
-    for await (const type of valueTypes) {
-      const response = await fetchMoves(type.value);
-      moves.push(response);
-    }
-
-    setMovesList(moves.flat());
-  }
-
-  function handleChangeTypes(value) {
-    setTypes(value);
-    getMovesByType(value);
-  }
-
-  useEffect(() => {
-    fetchFilters(setGenerationsList, setTypesList);
-  }, []);
+  const isTypesExist = types.length < 1;
 
   const generationsOptions = generationsList.map((gen) => {
     return {
@@ -68,19 +39,60 @@ export function Header({ onSubmit }) {
     };
   });
 
+  //função que manda os estados abaixo para o componente app
+  function handleSubmit() {
+
+    onSubmit({
+      generation,
+      types,
+      move,
+    });
+
+  }
+
+  //setar os tipos escolhidos, também envia como parametro ao getMovesByType
+  function handleChangeTypes(value) {
+    setTypes(value);
+    getMovesByType(value);
+  }
+
+  //buscar os movimentos pelos tipos
+  async function getMovesByType(valueTypes) {
+
+    const moves = [];
+
+    //adiciona no array todos os movimentos obtidos de resposta
+    for await (const type of valueTypes) {
+      const response = await fetchMoves(type.value);
+      moves.push(response);
+    }
+
+    //flat() para unificar todos os arrays obtidos em um só
+    setMovesList(moves.flat());
+  }
+
+
+  useEffect(() => {
+    fetchFilters(setGenerationsList, setTypesList);
+  }, []);
+
   return (
     <Container>
       <h1>Pokedex</h1>
 
       <SelectContainer >
         <CustomSelect
+          isRequired
           classNamePrefix='Select'
+          placeholder='Generation'
           options={generationsOptions}
           onChange={({ value }) => setGeneration(value)}
         />
 
         <CustomSelect
+          isRequired
           classNamePrefix='Select'
+          placeholder='Types'
           options={typesOptions}
           isMulti
           onChange={handleChangeTypes}
@@ -88,13 +100,21 @@ export function Header({ onSubmit }) {
 
         <CustomSelect
           classNamePrefix='Select'
+          placeholder='Moves'
           options={movesOptions}
           onChange={({ value }) => setMove(value)}
+          isDisabled={isTypesExist}
         />
 
       </SelectContainer>
 
-      <button type="submit" onClick={handleSubmit} >Search</button>
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        disabled={!generation || isTypesExist}
+      >
+        Search
+      </button>
 
     </Container>
   );

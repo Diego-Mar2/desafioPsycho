@@ -11,18 +11,26 @@ import detective from '../../assets/images/detective_pikachu.png';
 
 import Loader from '../Loader';
 
-export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
+export function LocationsBoard({
+  pokemonList,
+  isLoading,
+  setIsLoading,
+  isFirstTime,
+
+}) {
 
   const [locations, setLocations] = useState([]);
   const [eachLocation, setEachLocation] = useState([]);
   const [pokeData, setPokeData] = useState([]);
   const [pokeNotEncounter, setPokeNotEncounter] = useState([]);
 
+  //capturar todas as localizações dos pokemons
   async function getLocationsByPokemons() {
 
     const getLocation = pokemonList.map(async (pokemon) => {
       const pokeLocations = await fetchLocations(pokemon.location_area_encounters);
 
+      //relacionar as localizações obtidas com os nomes dos pokemons pertencentes
       return { pokeLocations, name: pokemon.name };
     });
 
@@ -43,11 +51,14 @@ export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
           const local = getPokeLocations[i].pokeLocations;
 
           location.push(local);
+
+          //relacionar o pokemon(objeto completo) as localizações pertencentes
           return { pokemon, location: local };
         }
       }
     });
 
+    //salvar os nomes das localizações em um estado tirando as repetições
     const noRepeatLocations = [...new Set(location.flat())];
 
     setEachLocation(noRepeatLocations);
@@ -73,16 +84,20 @@ export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
   return (
     <Container>
       <Loader isLoading={isLoading} />
-      {pokeData.length < 1 && (
+      {pokeData.length < 1 && !isLoading && (
         <Home>
           <img src={detective} alt="detective" />
 
-          <span>Você pode procurar a localização de pokemons por
-            <strong> Geração</strong>,
-            <strong> Tipos</strong> e
-            <strong> Ataques </strong>!!
-          </span>
-
+          {isFirstTime
+            ?
+            <span>Você pode procurar a localização de pokemons por
+              <strong> Geração</strong>,
+              <strong> Tipos</strong> e
+              <strong> Ataques </strong>!!
+            </span>
+            :
+            <span>Ops... Não consegui achar nenhum pokemon com essas características</span>
+          }
         </Home>
       )}
 
@@ -90,7 +105,9 @@ export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
         <>
           <h1>Locations</h1>
 
-          {locations && (
+          {locations &&
+
+          //para cada localização
             eachLocation.map((local) => (
               <CardsBoard
                 key={local}
@@ -98,8 +115,9 @@ export function LocationsBoard({ pokemonList, isLoading, setIsLoading }) {
                 local={local}
               />
             ))
-          )}
+          }
 
+          {/* se tiverem pokemons não localizados */}
           {pokeNotEncounter.length > 0 && (
             <CardsBoard
               key='unknown location'
@@ -118,4 +136,5 @@ LocationsBoard.propTypes = {
   pokemonList: PropTypes.array,
   isLoading: PropTypes.bool,
   setIsLoading: PropTypes.func,
+  isFirstTime: PropTypes.bool,
 };

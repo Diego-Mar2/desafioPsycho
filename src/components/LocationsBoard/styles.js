@@ -10,6 +10,7 @@ export const Container = styled.div`
 
 export const Home = styled.div`
   width: 100%;
+  margin-top: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,6 +18,7 @@ export const Home = styled.div`
 
   > img {
     width: 400px;
+    margin-left: 40px;
   }
 
   span {
