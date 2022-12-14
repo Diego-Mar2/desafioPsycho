@@ -49,7 +49,7 @@ $ cd desafioPsycho
 $ yarn
 
 # Execute a Aplicação
-$ yarn start
+$ yarn dev
 
 # O servidor iniciara na porta:5173 - acesse http://localhost:5173/
 ```
