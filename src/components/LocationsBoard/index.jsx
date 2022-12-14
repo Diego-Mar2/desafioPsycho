@@ -19,7 +19,6 @@ export function LocationsBoard({
 
 }) {
 
-  const [locations, setLocations] = useState([]);
   const [eachLocation, setEachLocation] = useState([]);
   const [pokeData, setPokeData] = useState([]);
   const [pokeNotEncounter, setPokeNotEncounter] = useState([]);
@@ -36,15 +35,15 @@ export function LocationsBoard({
 
     const locationResolved = await Promise.all(getLocation);
 
-    setLocations(locationResolved);
+    addLocationsIntoPokemons(locationResolved);
   }
 
-  function addLocationsIntoPokemons() {
+  function addLocationsIntoPokemons(locationResolved) {
 
     const location = [];
 
     const pokemon = pokemonList.map((pokemon) => {
-      const getPokeLocations = locations.map((pokeLocal) => pokeLocal);
+      const getPokeLocations = locationResolved.map((pokeLocal) => pokeLocal);
 
       for (let i = 0; i < getPokeLocations.length; i++) {
         if (pokemon.name === getPokeLocations[i].name) {
@@ -63,23 +62,14 @@ export function LocationsBoard({
 
     setEachLocation(noRepeatLocations);
     setPokeData(pokemon);
+    setPokeNotEncounter(pokemon.filter(({location}) => location.length === 0));
     setIsLoading(false);
 
   }
 
-  const isPokeLocationNotFound = pokeData.filter(({ location }) => location.length === 0);
-
   useEffect(() => {
     getLocationsByPokemons();
   }, [pokemonList]);
-
-  useEffect(() => {
-    addLocationsIntoPokemons();
-  }, [locations]);
-
-  useEffect(() => {
-    setPokeNotEncounter(isPokeLocationNotFound);
-  }, [pokeData]);
 
   return (
     <Container>
@@ -105,7 +95,7 @@ export function LocationsBoard({
         <>
           <h1>Locations</h1>
 
-          {locations &&
+          {pokeData &&
 
           //para cada localização
             eachLocation.map((local) => (

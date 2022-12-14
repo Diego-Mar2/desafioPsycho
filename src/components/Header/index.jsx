@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { fetchFilters } from '../../services/fetchFilters';
 import { fetchMoves } from '../../services/fetchMoves';
@@ -15,6 +15,8 @@ export function Header({ onSubmit }) {
   const [generationsList, setGenerationsList] = useState([]);
   const [typesList, setTypesList] = useState([]);
   const [movesList, setMovesList] = useState([]);
+
+  const selectMoveRef = useRef();
 
   const isTypesExist = types.length < 1;
 
@@ -39,6 +41,11 @@ export function Header({ onSubmit }) {
     };
   });
 
+  function onClearValue() {
+    setMove('');
+    selectMoveRef.current.clearValue();
+  }
+
   //função que manda os estados abaixo para o componente app
   function handleSubmit() {
 
@@ -54,6 +61,7 @@ export function Header({ onSubmit }) {
   function handleChangeTypes(value) {
     setTypes(value);
     getMovesByType(value);
+    onClearValue();
   }
 
   //buscar os movimentos pelos tipos
@@ -70,7 +78,6 @@ export function Header({ onSubmit }) {
     //flat() para unificar todos os arrays obtidos em um só
     setMovesList(moves.flat());
   }
-
 
   useEffect(() => {
     fetchFilters(setGenerationsList, setTypesList);
@@ -93,16 +100,18 @@ export function Header({ onSubmit }) {
           isRequired
           classNamePrefix='Select'
           placeholder='Types'
+          value={types}
           options={typesOptions}
           isMulti
           onChange={handleChangeTypes}
         />
 
         <CustomSelect
+          ref={ref => { selectMoveRef.current = ref;}}
           classNamePrefix='Select'
           placeholder='Moves'
           options={movesOptions}
-          onChange={({ value }) => setMove(value)}
+          onChange={(event) => setMove(event?.value)}
           isDisabled={isTypesExist}
         />
 
